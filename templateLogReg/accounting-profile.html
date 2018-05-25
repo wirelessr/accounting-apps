@@ -3,12 +3,18 @@
   <head>
     <meta name="generator"
     content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
-    <title>W3.CSS Template</title>
+    <title>記帳專用</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanstc.css" />
+    <style>
+      html,body,h1,h2,h3,h4,h5,h6 {
+        font-family: 'Noto Sans TC', sans-serif;
+      }
+    </style>
   </head>
   <body>
     <!-- Side Navigation -->
@@ -22,12 +28,11 @@
     <!-- Header -->
     <header class="w3-container w3-theme w3-padding" id="myHeader">
       <div class="w3-center">
-        <h4>BEAUTIFUL RESPONSIVE WEB SITES</h4>
-        <h1 class="w3-xxxlarge w3-animate-bottom">BUILT WITH W3.CSS</h1>
+        <h4>Falstaff, The Merry Wives of Windsor, Act 2 Scene 2</h4>
+        <h1 class="w3-xxxlarge w3-animate-bottom">Money is a good soldier, and will on</h1>
         <div class="w3-padding-32">
           <button class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey"
-          onclick="document.getElementById(&#39;id01&#39;).style.display=&#39;block&#39;" style="font-weight:900;">LEARN
-          W3.CSS</button>
+          onclick="document.getElementById(&#39;id01&#39;).style.display=&#39;block&#39;" style="font-weight:900;">開始記帳</button>
         </div>
       </div>
     </header>
@@ -40,25 +45,25 @@
           <h4>開源節流</h4>
           <h5>量入為出</h5>
         </header>
-        <form class="w3-container w3-card-4">
+        <form action="/accounting" method="post" class="w3-container w3-card-4">
           <h2>消費紀錄</h2>
           <div class="w3-section">
           <label>品項</label> 
-          <input class="w3-input" type="text" required="" /></div>
+          <input class="w3-input" type="text" name="note" required="" /></div>
           <div class="w3-section">
           <label>金額</label> 
-          <input class="w3-input" type="text" required="" /></div>
+          <input class="w3-input" type="text" name="cost" required="" /></div>
           <div class="w3-section">
           <label>種類</label> 
-          <select class="w3-select w3-border" name="option">
+          <select class="w3-select w3-border" name="type">
             <option value="" disabled="disabled" selected="selected">選一個</option>
             <option value="1">食物</option>
             <option value="2">交通</option>
             <option value="3">娛樂</option>
-			<option value="4">醫療</option>
-			<option value="5">消費</option>
-			<option value="6">住家</option>
-			<option value="99">其他</option>
+            <option value="4">醫療</option>
+            <option value="5">消費</option>
+            <option value="6">住家</option>
+            <option value="99">其他</option>
           </select></div>
           <div class="w3-section">
             <input class="w3-input" type="submit" value="輸入" />
@@ -102,7 +107,7 @@
           <p>Mobile first fluid grid</p>
           <p>Fits any screen sizes</p>
           <p>PC Tablet and Mobile</p>
-		  <p>XXX</p>
+          <p>XXX</p>
         </div>
       </div>
       <div class="w3-third">
@@ -126,16 +131,15 @@
         </div>
       </div>
     </div>
-    
     <!-- Footer -->
     <footer class="w3-container w3-theme-dark w3-padding-16">
       <h3>Footer</h3>
       <p>Powered by 
       <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
       <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
-      <span class="w3-text w3-theme-light w3-padding">Go To Top</span>  
+      <span class="w3-text w3-theme-light w3-padding">Go To Top</span>  
       <a class="w3-text-white" href="#myHeader"></a></div>
-      <p>Remember to check out our   
+      <p>Remember to check out our   
       <a href="w3css_references.asp" class="w3-btn w3-theme-light" target="_blank">W3.CSS Reference</a></p>
     </footer>
     <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
