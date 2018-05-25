@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/users');
 var path = require('path');
+var Record = require('../models/records');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
@@ -84,5 +85,49 @@ router.get('/logout', function (req, res, next) {
     }
 }
 );
+
+// GET route for reading data
+router.get('/accounting', function (req, res, next) {
+  User.findById(req.session.userId, function (error, user) {
+      if (error) {
+        return next(error);
+      } else {
+        if (user === null) {
+          var err = new Error('Not authorized! Go back!');
+          err.status = 400;
+          return next(err);
+        } else {
+		  return res.sendFile(path.join(process.cwd(), 'templateLogReg/accounting-profile.html'));
+        }
+      }
+    });
+});
+
+router.post('/accounting', function (req, res, next) {
+  if (req.body.note &&
+    req.body.cost &&
+    req.body.type) {
+
+    var userData = {
+      note: req.body.note,
+      cost: req.body.cost,
+      type: req.body.type,
+    }
+
+    Record.create(req.session.userId, userData, function (error, data) {
+      if (error) {
+        return next(error);
+      } else {
+	  	console.log('Success at '+data.date);
+        return res.redirect('/accounting');
+      }
+    });
+
+  } else {
+    var err = new Error('All fields required.');
+    err.status = 400;
+    return next(err);
+  }
+});
 
 module.exports = router;

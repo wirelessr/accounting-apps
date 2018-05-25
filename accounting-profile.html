@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="generator"
+    content="HTML Tidy for HTML5 (experimental) for Windows https://github.com/w3c/tidy-html5/tree/c63cc39" />
+    <title>記帳專用</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanstc.css" />
+    <style>
+      html,body,h1,h2,h3,h4,h5,h6 {
+        font-family: 'Noto Sans TC', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Side Navigation -->
+    <nav class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-center" style="display:none" id="mySidebar">
+    <h1 class="w3-xxxlarge w3-text-theme">Side Navigation</h1>
+    <button class="w3-bar-item w3-button" onclick="w3_close()">Close</button> 
+    <a href="#" class="w3-bar-item w3-button">Link 1</a> 
+    <a href="#" class="w3-bar-item w3-button">Link 2</a> 
+    <a href="#" class="w3-bar-item w3-button">Link 3</a> 
+    <a href="#" class="w3-bar-item w3-button">Link 4</a></nav>
+    <!-- Header -->
+    <header class="w3-container w3-theme w3-padding" id="myHeader">
+      <div class="w3-center">
+        <h4>Falstaff, The Merry Wives of Windsor, Act 2 Scene 2</h4>
+        <h1 class="w3-xxxlarge w3-animate-bottom">Money is a good soldier, and will on</h1>
+        <div class="w3-padding-32">
+          <button class="w3-btn w3-xlarge w3-dark-grey w3-hover-light-grey"
+          onclick="document.getElementById(&#39;id01&#39;).style.display=&#39;block&#39;" style="font-weight:900;">開始記帳</button>
+        </div>
+      </div>
+    </header>
+    <!-- Modal -->
+    <div id="id01" class="w3-modal">
+      <div class="w3-modal-content w3-card-4 w3-animate-top">
+        <header class="w3-container w3-theme-l1">
+          <span onclick="document.getElementById(&#39;id01&#39;).style.display=&#39;none&#39;"
+          class="w3-button w3-display-topright">×</span>
+          <h4>開源節流</h4>
+          <h5>量入為出</h5>
+        </header>
+        <form class="w3-container w3-card-4">
+          <h2>消費紀錄</h2>
+          <div class="w3-section">
+          <label>品項</label> 
+          <input class="w3-input" type="text" required="" /></div>
+          <div class="w3-section">
+          <label>金額</label> 
+          <input class="w3-input" type="text" required="" /></div>
+          <div class="w3-section">
+          <label>種類</label> 
+          <select class="w3-select w3-border" name="option">
+            <option value="" disabled="disabled" selected="selected">選一個</option>
+            <option value="1">食物</option>
+            <option value="2">交通</option>
+            <option value="3">娛樂</option>
+            <option value="4">醫療</option>
+            <option value="5">消費</option>
+            <option value="6">住家</option>
+            <option value="99">其他</option>
+          </select></div>
+          <div class="w3-section">
+            <input class="w3-input" type="submit" value="輸入" />
+          </div>
+        </form>
+        <footer class="w3-container w3-theme-l1">
+          <p>Version 1.0</p>
+        </footer>
+      </div>
+    </div>
+    <div class="w3-row-padding w3-center w3-margin-top">
+      <div class="w3-third">
+        <div class="w3-card w3-container" style="min-height:460px">
+          <h3>Responsive</h3>
+          <br />
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>Built-in responsiveness</p>
+          <p>Mobile first fluid grid</p>
+          <p>Fits any screen sizes</p>
+          <p>PC Tablet and Mobile</p>
+          <p>XXX</p>
+        </div>
+      </div>
+      <div class="w3-third">
+        <div class="w3-card w3-container" style="min-height:460px">
+          <h3>Standard CSS</h3>
+          <br />
+          <p>Standard CSS only</p>
+          <p>Easy to learn</p>
+          <p>No need for jQuery</p>
+          <p>No JavaScript library</p>
+        </div>
+      </div>
+      <div class="w3-third">
+        <div class="w3-card w3-container" style="min-height:460px">
+          <h3>Design</h3>
+          <br />
+          <p>Paper like design</p>
+          <p>Bold colors and shadows</p>
+          <p>Equal across platforms</p>
+          <p>Equal across devices</p>
+        </div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <footer class="w3-container w3-theme-dark w3-padding-16">
+      <h3>Footer</h3>
+      <p>Powered by 
+      <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+      <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+      <span class="w3-text w3-theme-light w3-padding">Go To Top</span>  
+      <a class="w3-text-white" href="#myHeader"></a></div>
+      <p>Remember to check out our   
+      <a href="w3css_references.asp" class="w3-btn w3-theme-light" target="_blank">W3.CSS Reference</a></p>
+    </footer>
+    <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+    <script>
+// Side navigation
+function w3_open() {
+    var x = document.getElementById(&amp;amp;amp;amp;amp;amp;quot;mySidebar&amp;amp;amp;amp;amp;amp;quot;);
+    x.style.width = &amp;amp;amp;amp;amp;amp;quot;100%&amp;amp;amp;amp;amp;amp;quot;;
+    x.style.fontSize = &amp;amp;amp;amp;amp;amp;quot;40px&amp;amp;amp;amp;amp;amp;quot;;
+    x.style.paddingTop = &amp;amp;amp;amp;amp;amp;quot;10%&amp;amp;amp;amp;amp;amp;quot;;
+    x.style.display = &amp;amp;amp;amp;amp;amp;quot;block&amp;amp;amp;amp;amp;amp;quot;;
+}
+function w3_close() {
+    document.getElementById(&amp;amp;amp;amp;amp;amp;quot;mySidebar&amp;amp;amp;amp;amp;amp;quot;).style.display =
+&amp;amp;amp;amp;amp;amp;quot;none&amp;amp;amp;amp;amp;amp;quot;;
+}
+
+</script>
+  </body>
+</html>
