@@ -37,7 +37,7 @@ router.post('/', function (req, res, next) {
         return next(error);
       } else {
         req.session.userId = user.uid;
-        return res.redirect('/profile');
+        return res.redirect('/accounting');
       }
     });
 
@@ -49,7 +49,7 @@ router.post('/', function (req, res, next) {
         return next(err);
       } else {
         req.session.userId = user.uid;
-        return res.redirect('/profile');
+        return res.redirect('/accounting');
       }
     });
   } else {
