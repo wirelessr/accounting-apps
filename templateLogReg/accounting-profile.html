@@ -16,6 +16,7 @@
       }
     </style>
 	<script src="js/accounting.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body onload="list_report()">
     <!-- Side Navigation -->
@@ -110,6 +111,14 @@
           <h3>本月</h3>
           <br />
 		    <p id="monthReport">Monthly</p>
+			<div id="piechart"></div>
+			<script type="text/javascript">
+			// Load google charts
+			google.charts.load('current', {'packages':['corechart']});
+			google.charts.setOnLoadCallback(drawChart);
+
+			// Draw the chart and set the chart values
+			</script>
         </div>
       </div>
     </div>
