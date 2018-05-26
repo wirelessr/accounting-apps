@@ -15,6 +15,7 @@
         font-family: 'Noto Sans TC', sans-serif;
       }
     </style>
+	<script src="js/accounting.js"></script>
   </head>
   <body onload="list_report()">
     <!-- Side Navigation -->
@@ -78,7 +79,7 @@
     <div class="w3-row-padding w3-center w3-margin-top">
       <div class="w3-third">
         <div class="w3-card w3-container" style="min-height:460px">
-          <h3>今天</h3>
+          <h3 id="todayDate">今天</h3>
           <br />
 		  <table class="w3-table w3-striped w3-bordered">
 		  <thead>
@@ -91,6 +92,10 @@
 		  <tbody id="todayReport">
 		  </tbody>
 		  </table>
+			<div class="w3-bar">
+			  <a onclick="shift_day(-1)" class="w3-bar-item w3-button w3-hover-theme">«</a>
+			  <a onclick="shift_day(1)" class="w3-bar-item w3-button w3-hover-theme">»</a>
+			</div>
         </div>
       </div>
       <div class="w3-third">
@@ -131,25 +136,6 @@
 	}
 	function w3_close() {
 		document.getElementById("mySidebar").style.display = "none";
-	}
-	function list_report() {
-		var xhttp = new XMLHttpRequest();
-		xhttp.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				var rowdata = JSON.parse(this.responseText);
-				var table = '';
-				for(i in rowdata.rows) {
-					table += '<tr>';
-					table += '<td>'+rowdata.rows[i].note+'</td>';
-					table += '<td>'+rowdata.rows[i].type+'</td>';
-					table += '<td>'+rowdata.rows[i].cost+'</td>';
-					table += '</tr>';
-				}
-				document.getElementById("todayReport").innerHTML = table;
-			}
-		};
-		xhttp.open("GET", "/list/all", true);
-		xhttp.send();
 	}
 	</script>
   </body>
