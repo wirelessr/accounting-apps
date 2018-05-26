@@ -42,7 +42,7 @@ module.exports.create = function(uid, data, callback) {
         },
         function _create(step) {
             console.log('insert a record')
-            data.date = new Date();
+            data.date = (new Date()).getTime();
             records.addRow(data, callback);
             step();
         }
@@ -51,5 +51,49 @@ module.exports.create = function(uid, data, callback) {
             console.log(err);
         }
         console.log('Create finished');
+    });
+}
+
+module.exports.retrieve = function(uid, callback) {
+    async.waterfall([
+        setAuth,
+        function _getWorksheet(next) {
+            console.log('getWorksheet');
+            doc.getInfo(function(err, info) {
+                console.log('Loaded doc: '+info.title+' by '+info.author.email);
+                var record = info.worksheets.find(function(element) {
+                    return element.title == 'asjkd-askdlj-askdj-askljd';
+                });
+                next(err, record);
+            });
+        },
+        function _retrieve(record, step) {
+			if(record) {
+				record.getRows({
+					offset: 0,
+				}, function(err, rows){
+					rowdata = [];
+					for(i=0; i<rows.length; i++) {
+						rowdata.push({
+							date: rows[i].date,
+							cost: rows[i].cost,
+							type: rows[i].type,
+							note: rows[i].note,
+							});
+					}
+					callback(err, rowdata);
+				});
+			}
+			else {
+				err = new Error('Not existed');
+				err.status = 404;
+				throw err;
+			}
+        }
+    ], function(err) {
+        if(err) {
+            console.log(err);
+        }
+        console.log('Retrieve finished');
     });
 }
