@@ -1,6 +1,5 @@
 var GoogleSpreadsheet = require('google-spreadsheet');
 var doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID);
-var users;
 var async = require('async');
 
 function _uuid() {
@@ -25,22 +24,22 @@ function setAuth(step) {
     doc.useServiceAccountAuth(creds_json, step);
 }
 
-function getInfoAndWorksheets(step) {
+function getInfoAndWorksheets(next) {
     console.log('getInfoAndWorksheets');
     doc.getInfo(function(err, info) {
         console.log('Loaded doc: '+info.title+' by '+info.author.email);
         users = info.worksheets.find(function(element) {
             return element.title == 'users';
         });
-        step();
+        next(err, users);
     });
 }
 
 module.exports.create = function(userdata, callback) {
-    async.series([
+    async.waterfall([
         setAuth,
         getInfoAndWorksheets,
-        function _create(step) {
+        function _create(users, step) {
             users.getRows({
                 query: 'username == '+userdata.username
             }, function( err, rows ){
@@ -66,10 +65,10 @@ module.exports.create = function(userdata, callback) {
 }
 
 module.exports.authenticate = function(acct, passwd, callback) {
-	async.series([
+	async.waterfall([
 		setAuth,
 		getInfoAndWorksheets,
-		function _authenticate(step) {
+		function _authenticate(users, step) {
             console.log(acct+', '+passwd);
 			users.getRows({
 				query: 'username =='+acct+' and password =='+passwd
@@ -92,10 +91,10 @@ module.exports.authenticate = function(acct, passwd, callback) {
 }
 
 module.exports.findById = function(uid, callback) {
-	async.series([
+	async.waterfall([
 		setAuth,
 		getInfoAndWorksheets,
-		function _findById(step) {
+		function _findById(users, step) {
 			users.getRows({
 				query: 'uid =='+uid
 			}, function(err, rows) {

@@ -62,7 +62,7 @@ module.exports.retrieve = function(uid, callback) {
             doc.getInfo(function(err, info) {
                 console.log('Loaded doc: '+info.title+' by '+info.author.email);
                 var record = info.worksheets.find(function(element) {
-                    return element.title == 'asjkd-askdlj-askdj-askljd';
+                    return element.title == uid;
                 });
                 next(err, record);
             });
