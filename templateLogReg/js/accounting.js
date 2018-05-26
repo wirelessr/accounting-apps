@@ -11,6 +11,15 @@ function list_daily_report(isodate) {
 	date.setDate(date.getDate() + 1)
 	var end_ts = date.getTime();
 	var xhttp = new XMLHttpRequest();
+	var icons = {
+		1: 'fa-cutlery',
+		2: 'fa-automobile',
+		3: 'fa-gamepad',
+		4: 'fa-stethoscope',
+		5: 'fa-shopping-bag',
+		6: 'fa-home',
+		99: 'fa-paperclip',
+	}
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var rowdata = JSON.parse(this.responseText);
@@ -19,7 +28,7 @@ function list_daily_report(isodate) {
 				if(start_ts <= rowdata.rows[i].date && rowdata.rows[i].date < end_ts) {
 					table += '<tr>';
 					table += '<td>'+rowdata.rows[i].note+'</td>';
-					table += '<td>'+rowdata.rows[i].type+'</td>';
+					table += '<td><i class="fa '+icons[rowdata.rows[i].type]+'"></i></td>';
 					table += '<td>'+rowdata.rows[i].cost+'</td>';
 					table += '</tr>';
 				}
