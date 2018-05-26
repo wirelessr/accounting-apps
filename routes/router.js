@@ -130,4 +130,19 @@ router.post('/accounting', function (req, res, next) {
   }
 });
 
+router.get('/list/:type', function(req, res, next){
+	if(req.params.type == 'all') {
+		Record.retrieve(req.session.userId, function(err, rowdata){
+			if(err) {
+				return next(err);
+			}
+			res.json({rows: rowdata});
+		});	
+	} else {
+		var err = new Error('Not support list: '+req.params.type);
+		err.status = 400;
+		return next(err);
+	}
+});
+
 module.exports = router;
