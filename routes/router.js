@@ -130,9 +130,26 @@ router.post('/accounting', function (req, res, next) {
   }
 });
 
-router.get('/list/:type', function(req, res, next){
+router.get('/list/:type/:range*?', function(req, res, next){
+	var query_params;
+
 	if(req.params.type == 'all') {
-		Record.retrieve(req.session.userId, function(err, rowdata){
+		query_params = {offset: 0}
+	} else if(req.params.type == 'month' && req.params.range) {
+		var isomonth = req.params.range;
+		var thismonth = new Date(isomonth);
+		var start_ts = thismonth.getTime();
+		thismonth.setMonth(thismonth.getMonth() + 1);
+		var end_ts = thismonth.getTime();
+		query_params = {
+			offset: 0,
+			orderby: 'cost',
+			query: 'date >= '+start_ts+' and date < '+end_ts
+		}
+	}
+
+	if(query_params) {
+		Record.retrieve(req.session.userId, query_params, function(err, rowdata){
 			if(err) {
 				return next(err);
 			}

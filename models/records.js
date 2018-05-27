@@ -54,7 +54,7 @@ module.exports.create = function(uid, data, callback) {
     });
 }
 
-module.exports.retrieve = function(uid, callback) {
+module.exports.retrieve = function(uid, query_params, callback) {
     async.waterfall([
         setAuth,
         function _getWorksheet(next) {
@@ -69,9 +69,7 @@ module.exports.retrieve = function(uid, callback) {
         },
         function _retrieve(record, step) {
 			if(record) {
-				record.getRows({
-					offset: 0,
-				}, function(err, rows){
+				record.getRows(query_params, function(err, rows){
 					rowdata = [];
 					for(i=0; i<rows.length; i++) {
 						rowdata.push({

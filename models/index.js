@@ -24,9 +24,13 @@ function _insert(err, user)
 //users.create({username: 'testfoo2', password: '1234567'}, _validate);
 //users.authenticate('testfoo2', '1234567', _validate);
 //users.findById('asjkd-askdlj-askdj-askljd', _validate);
-users.findById('asjkd-askdlj-askdj-askljd', _insert);
+//users.findById('asjkd-askdlj-askdj-askljd', _insert);
 
-records.retrieve('asjkd-askdlj-askdj-askljd', function(err, rows){
+query_params = {
+	offset: 0,
+	orderby: 'cost'
+}
+records.retrieve('asjkd-askdlj-askdj-askljd', query_params, function(err, rows){
 	if(err) {
 		console.log('INDEX ERR '+err);
 	} else {

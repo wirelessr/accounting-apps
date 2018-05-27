@@ -86,8 +86,8 @@
 		  <thead>
 		  <tr class="w3-theme">
 		  <th>項目</th>
-		  <th>種類</th>
-		  <th>價格</th>
+		  <th>類別</th>
+		  <th>花費</th>
 		  </tr>
 		  </thead>
 		  <tbody id="todayReport">
@@ -108,7 +108,7 @@
       </div>
       <div class="w3-third">
         <div class="w3-card w3-container" style="min-height:460px">
-          <h3>本月</h3>
+          <h3 id="thisMonth">本月</h3>
           <br />
 		    <p id="monthReport">Monthly</p>
 			<div id="piechart"></div>
@@ -119,6 +119,21 @@
 
 			// Draw the chart and set the chart values
 			</script>
+			<h4>Top 5</h4>
+			  <table class="w3-table w3-striped w3-bordered">
+			  <thead>
+			  <tr class="w3-theme">
+			  <th>項目</th>
+			  <th>花費</th>
+			  </tr>
+			  </thead>
+			  <tbody id="topMonth">
+			  </tbody>
+			  </table>
+			<div class="w3-bar">
+			  <a onclick="shift_month(-1)" class="w3-bar-item w3-button w3-hover-theme">«</a>
+			  <a onclick="shift_month(1)" class="w3-bar-item w3-button w3-hover-theme">»</a>
+			</div>
         </div>
       </div>
     </div>
