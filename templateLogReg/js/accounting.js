@@ -1,3 +1,13 @@
+var types = {
+1: '食物',
+   2: '交通',
+   3: '娛樂',
+   4: '醫療',
+   5: '消費',
+   6: '住家',
+   99: '其他',
+}
+
 function list_report() {
 	var today = new Date();
 	var todayDate = today.toISOString().slice(0,10);
@@ -39,7 +49,7 @@ function list_daily_report(isodate) {
 			document.getElementById("todayReport").innerHTML = table;
 		}
 	};
-	xhttp.open("GET", "/list/all", true);
+	xhttp.open("GET", "/list/time/"+start_ts+'-'+end_ts, true);
 	xhttp.send();
 }
 
@@ -79,15 +89,6 @@ function drawChart() {
 			var summary = {}
 			var list = [['type', 'cost']]
 			var total = 0;
-			var types = {
-				1: '食物',
-				2: '交通',
-				3: '娛樂',
-				4: '醫療',
-				5: '消費',
-				6: '住家',
-				99: '其他',
-			}
 			var topMonth = '';
 
 			for(i in rowdata.rows) {
@@ -125,3 +126,84 @@ function drawChart() {
 	xhttp.open("GET", '/list/month/'+isodate, true);
 	xhttp.send();
 }
+
+function render_line() {
+	var isocurr = (new Date()).toISOString().slice(0,10); // get current date
+	var curr = new Date(isocurr);
+	var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+	var last = first + 6; // last day is the first day + 6
+
+	var start_ts = new Date(curr.setDate(first)).getTime();
+	var end_ts = new Date(curr.setDate(last)).getTime();
+
+	console.log(start_ts+', '+end_ts);
+
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var rowdata = JSON.parse(this.responseText);
+			var g = new line_graph();
+			var buget = 1000;
+			var summary = {0: buget}
+			var weekday = {}
+			weekday[0] =  "Sun";
+			weekday[1] = "Mon";
+			weekday[2] = "Tue";
+			weekday[3] = "Wed";
+			weekday[4] = "Thu";
+			weekday[5] = "Fri";
+			weekday[6] = "Sat";
+			var typesum = {}
+
+			for(i in rowdata.rows) {
+				var date = parseInt(rowdata.rows[i].date);
+				var cost = parseInt(rowdata.rows[i].cost);
+				var type = parseInt(rowdata.rows[i].type);
+				var wd = (new Date(date)).getDay();
+
+				if(summary[wd]) {
+					summary[wd] -= cost;	
+				} else {
+					summary[wd] = buget - cost;
+				}
+
+				if(typesum[type]) {
+					typesum[type] += cost;
+				} else {
+					typesum[type] = cost;
+				}
+			}
+
+			var typedraw = [];
+			for(i in typesum) {
+				typedraw.push({'type': types[i], 'cost': typesum[i]});
+			}
+			draw(typedraw, 456);
+
+			for(i in summary) {
+				g.add(weekday[i], summary[i]);
+			}
+			g.render("lineCanvas", "預算1000");
+		}
+	};
+	xhttp.open("GET", '/list/time/'+start_ts+'-'+end_ts, true);
+	xhttp.send();
+}
+
+function draw(data, max) {
+  d3.select('.barChart') //選擇放在barChart這個div容器裡面
+  .selectAll('div') //選取".barChart"範圍內的所有的div
+  .data(data) //將資料加入div
+  .enter() //傳入資料
+  .append('div') //放到畫面上
+  .attr('class','item') //將剛剛放到畫面上的div，加上class "item"
+  .text(function(d){return d.type}) //加上文字描述，使用json檔案裡面的 "type" 欄位
+  .append('div') //加入包含資料的div，這個div是用來畫圖用的
+  .text(function (data) {
+      return data.cost; //畫圖用div加上文字描述，使用json檔案裡面的 "cost" 欄位
+  })
+  .attr('class','bar') //畫圖用div加上class "bar"
+  .style('width', function(d){
+      return (d.cost)*80/max  + '%'
+  });
+};

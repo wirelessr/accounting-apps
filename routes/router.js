@@ -146,6 +146,12 @@ router.get('/list/:type/:range*?', function(req, res, next){
 			orderby: 'cost',
 			query: 'date >= '+start_ts+' and date < '+end_ts
 		}
+	} else if(req.params.type == 'time' && req.params.range) {
+		ts = req.params.range.split('-')	
+		query_params = {
+			offset: 0,
+			query: 'date >= '+ts[0]+' and date < '+ts[1]
+		}
 	}
 
 	if(query_params) {

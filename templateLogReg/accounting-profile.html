@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/earlyaccess/notosanstc.css" />
+    <link rel="stylesheet" href="css/barchart.css" />
     <style>
       html,body,h1,h2,h3,h4,h5,h6 {
         font-family: 'Noto Sans TC', sans-serif;
@@ -17,6 +18,9 @@
     </style>
 	<script src="js/accounting.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/wz_jsgraphics.js"></script>
+	<script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/line.js"></script>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
   </head>
   <body onload="list_report()">
     <!-- Side Navigation -->
@@ -101,9 +105,17 @@
       </div>
       <div class="w3-third">
         <div class="w3-card w3-container" style="min-height:460px">
-          <h3>這周</h3>
+          <h3>本周</h3>
           <br />
 		    <p id="weekReport">Weekly</p>
+			<div id="lineCanvas" style="overflow: auto; position:relative;height:300px;width:100;"></div>
+
+			<script type="text/javascript">
+				render_line();
+			</script>
+			<br />
+            <h4>列表</h4>
+			<div class="barChart"></div>
         </div>
       </div>
       <div class="w3-third">

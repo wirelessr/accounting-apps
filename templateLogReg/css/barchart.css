@@ -1,0 +1,21 @@
+.barChart{
+	font-family:verdana;
+	font-size: 13px;
+}
+.barChart .item {
+	float: left;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 5px;
+	text-align: left;
+	width: 100%;
+}
+.barChart .bar {
+	background-color: DarkRed;
+	color: #fff;
+	float: left;
+	height: 40px;
+	text-align: right;
+	margin-right: 10px;
+	padding-right: 10px;
+}
