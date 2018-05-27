@@ -175,10 +175,14 @@ function render_line() {
 			}
 
 			var typedraw = [];
+			var max = 0;
 			for(i in typesum) {
+				if(typesum[i] > max) {
+					max = typesum[i];
+				}
 				typedraw.push({'type': types[i], 'cost': typesum[i]});
 			}
-			draw(typedraw, 456);
+			draw(typedraw, max);
 
 			for(i in summary) {
 				g.add(weekday[i], summary[i]);
