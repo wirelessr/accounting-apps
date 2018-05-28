@@ -57,7 +57,7 @@ function list_daily_report(isodate) {
 			var rowdata = JSON.parse(this.responseText);
 			var table = '';
 			for(i in rowdata.rows) {
-				if(start_ts <= rowdata.rows[i].date && rowdata.rows[i].date < end_ts) {
+				if(rowdata.rows[i].cost > 0) {
 					table += '<tr>';
 					table += '<td>'+rowdata.rows[i].note+'</td>';
 					table += '<td><i class="fa '+icons[rowdata.rows[i].type]+'"></i></td>';
@@ -111,10 +111,13 @@ function drawChart() {
 			var list = [['type', 'cost']]
 			var total = 0;
 			var topMonth = '';
+			var totalIn = 0;
 
 			for(i in rowdata.rows) {
                 var cost = parseInt(rowdata.rows[i].cost);
+                var income = parseInt(rowdata.rows[i].income);
                 total += cost;
+				totalIn += income;
                 if(summary[rowdata.rows[i].type]) {
                     summary[rowdata.rows[i].type] += cost;
                 } else {
@@ -127,7 +130,7 @@ function drawChart() {
 				topMonth += '<tr>'+note+cost+'</tr>';
 			}
 			document.getElementById('topMonth').innerHTML = topMonth;
-			document.getElementById("monthReport").innerHTML = '總共開銷：'+total;
+			document.getElementById("monthReport").innerHTML = '總共開銷：'+total+'<br>總共收入：'+totalIn;
 
 			for(i in summary) {
 				list.push([types[i], summary[i]]);
@@ -151,12 +154,14 @@ function drawChart() {
                 week_ts.end = endday.getTime();
                 return week_ts;
             });
-            var month_budget = 60000;
+            var month_budget = 0;
             var weeks_report = {};
             var dataset = [];
             var max_idx = 0;
-
             rowdata.rows.forEach(function(row) {
+				if(row.type == 1 && row.income > 0) {
+					month_budget = parseInt(row.income);
+				}
                 var idx = weeks_ts.findIndex(function(elem) { return elem.start <= row.date && row.date < elem.end });
                 var cost = parseInt(row.cost);
                 if(idx == -1) {console.log(row); }
@@ -299,15 +304,16 @@ bar.append('text')
 
 function switchmode(item) {
     var items = ['income', 'outcome'];
+	var inputform;
     items.forEach(function(i) {
-        if(i == item.id) {
+        if(i == item) {
             document.getElementById(i).classList.add('w3-border-red');
         } else {
             document.getElementById(i).classList.remove('w3-border-red');
         }
     });
 
-    if(item.id == 'outcome') {
+    if(item == 'outcome') {
         inputform = ''+
         '<form action="/accounting" method="post" class="w3-container w3-card-4">'+
           '<h2>消費紀錄</h2>'+
@@ -334,9 +340,28 @@ function switchmode(item) {
           '</div>'+
         '</form>';
 
-        console.log(inputform);
-        document.getElementById('inputform').innerHTML = inputform;
     } else {
-        document.getElementById('inputform').innerHTML = '404 Not Found';
+        inputform = ''+
+        '<form action="/incoming" method="post" class="w3-container w3-card-4">'+
+          '<h2>收入紀錄</h2>'+
+          '<div class="w3-section">'+
+          '<label>品項</label> '+
+          '<input class="w3-input" type="text" name="note" required="" /></div>'+
+          '<div class="w3-section">'+
+          '<label>金額</label> '+
+          '<input class="w3-input" type="text" name="income" required="" /></div>'+
+          '<div class="w3-section">'+
+          '<label>種類</label> '+
+          '<select class="w3-select w3-border" name="type">'+
+            '<option value="" disabled="disabled" selected="selected">選一個</option>'+
+            '<option value="1">主要收入(預算)</option>'+
+            '<option value="2">運氣好</option>'+
+            '<option value="3">賺點小錢</option>'+
+          '</select></div>'+
+          '<div class="w3-section">'+
+            '<input class="w3-input" type="submit" value="輸入" />'+
+          '</div>'+
+        '</form>';
     }
+	document.getElementById('inputform').innerHTML = inputform;
 }

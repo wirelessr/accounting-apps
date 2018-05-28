@@ -112,6 +112,35 @@ router.post('/accounting', function (req, res, next) {
       note: req.body.note,
       cost: req.body.cost,
       type: req.body.type,
+	  income: 0,
+    }
+
+    Record.create(req.session.userId, userData, function (error, data) {
+      if (error) {
+        return next(error);
+      } else {
+	  	console.log('Success at '+data.date);
+        return res.redirect('/accounting');
+      }
+    });
+
+  } else {
+    var err = new Error('All fields required.');
+    err.status = 400;
+    return next(err);
+  }
+});
+
+router.post('/incoming', function (req, res, next) {
+  if (req.body.note &&
+    req.body.income &&
+    req.body.type) {
+
+    var userData = {
+      note: req.body.note,
+      type: req.body.type,
+	  income: req.body.income,
+	  cost: 0,
     }
 
     Record.create(req.session.userId, userData, function (error, data) {

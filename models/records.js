@@ -77,6 +77,7 @@ module.exports.retrieve = function(uid, query_params, callback) {
 							cost: rows[i].cost,
 							type: rows[i].type,
 							note: rows[i].note,
+							income: rows[i].income,
 							});
 					}
 					callback(err, rowdata);
