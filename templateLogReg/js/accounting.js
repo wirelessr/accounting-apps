@@ -154,7 +154,7 @@ function drawChart() {
                 week_ts.end = endday.getTime();
                 return week_ts;
             });
-            var month_budget = 0;
+            var month_budget = 50000;
             var weeks_report = {};
             var dataset = [];
             var max_idx = 0;
