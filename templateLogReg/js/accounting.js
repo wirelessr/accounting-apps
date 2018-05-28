@@ -220,7 +220,9 @@ function render_line() {
 				if(typesum[i] > max) {
 					max = typesum[i];
 				}
-				typedraw.push({'type': types[i], 'cost': typesum[i]});
+				if(typesum[i] > 0) {
+					typedraw.push({'type': types[i], 'cost': typesum[i]});
+				}
 			}
 			draw(typedraw, max);
 		}
