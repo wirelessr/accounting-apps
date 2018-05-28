@@ -8,6 +8,24 @@ var types = {
    99: '其他',
 }
 
+function getWeeksInMonth(month, year){
+   var weeks=[],
+       firstDate=new Date(year, month, 1),
+       lastDate=new Date(year, month+1, 0),
+       numDays= lastDate.getDate();
+
+   var start=1;
+   var end=7-firstDate.getDay();
+   while(start<=numDays){
+       weeks.push({start:start,end:end});
+       start = end + 1;
+       end = end + 7;
+       if(end>numDays)
+           end=numDays;
+   }
+    return weeks;
+}
+
 function list_report() {
 	var today = new Date();
 	var todayDate = today.toISOString().slice(0,10);
@@ -16,6 +34,7 @@ function list_report() {
 	document.getElementById("thisMonth").innerHTML = monthDate;
 	
 	list_daily_report(todayDate);
+    render_line();
 }
 
 function list_daily_report(isodate) {
@@ -75,12 +94,14 @@ function shift_month(offset) {
 	google.charts.setOnLoadCallback(drawChart);
 }
 
+Number.prototype.pad = function(size) {
+  var s = String(this);
+  while (s.length < (size || 2)) {s = "0" + s;}
+  return s;
+}
+
 function drawChart() {
 	var isodate = document.getElementById('thisMonth').innerHTML;
-	var thisMonth = new Date(isodate);
-	var start_ts = thisMonth.getTime();
-	thisMonth.setMonth(thisMonth.getMonth() + 1);
-	var end_ts = thisMonth.getTime();
 
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -92,15 +113,13 @@ function drawChart() {
 			var topMonth = '';
 
 			for(i in rowdata.rows) {
-				if(start_ts <= rowdata.rows[i].date && rowdata.rows[i].date < end_ts) {
-					var cost = parseInt(rowdata.rows[i].cost);
-					total += cost;
-					if(summary[rowdata.rows[i].type]) {
-						summary[rowdata.rows[i].type] += cost;
-					} else {
-						summary[rowdata.rows[i].type] = cost;
-					}
-				}
+                var cost = parseInt(rowdata.rows[i].cost);
+                total += cost;
+                if(summary[rowdata.rows[i].type]) {
+                    summary[rowdata.rows[i].type] += cost;
+                } else {
+                    summary[rowdata.rows[i].type] = cost;
+                }
 			}
 			for(i = rowdata.rows.length - 1, j = 0; i>=0 && j < 5; i--, j++) {
 				var note = '<td>'+rowdata.rows[i].note+'</td>';
@@ -121,6 +140,42 @@ function drawChart() {
 			// Display the chart inside the <div> element with id="piechart"
 			var chart = new google.visualization.PieChart(document.getElementById('piechart'));
 			chart.draw(data, options);
+
+            var isoy_m = isodate.split('-');
+            var weeks = getWeeksInMonth(isoy_m[1]-1, isoy_m[0]);
+            var weeks_ts = weeks.map(function(w) {
+                var week_ts = {};
+                week_ts.start = new Date(isoy_m+'-'+w.start.pad(2)).getTime();
+                endday = new Date(isoy_m+'-'+w.end.pad(2));
+                endday.setHours(24,0,0,0);
+                week_ts.end = endday.getTime();
+                return week_ts;
+            });
+            var month_budget = 60000;
+            var weeks_report = {};
+            var dataset = [];
+            var max_idx = 0;
+
+            rowdata.rows.forEach(function(row) {
+                var idx = weeks_ts.findIndex(function(elem) { return elem.start <= row.date && row.date < elem.end });
+                var cost = parseInt(row.cost);
+                if(idx == -1) {console.log(row); }
+                else {
+                   if(idx > max_idx) max_idx = idx;
+                   if(weeks_report[idx]) {
+                        weeks_report[idx] += cost;
+                    } else {
+                        weeks_report[idx] = cost;
+                    }
+                }
+            });
+            for(i = 0; i <= max_idx; i++) {
+                if(weeks_report[i]) {
+                    month_budget -= weeks_report[i];
+                }
+                dataset.push(month_budget);
+            }
+            vBarChart(dataset);
 		}
 	};
 	xhttp.open("GET", '/list/month/'+isodate, true);
@@ -136,36 +191,16 @@ function render_line() {
 	var start_ts = new Date(curr.setDate(first)).getTime();
 	var end_ts = new Date(curr.setDate(last)).getTime();
 
-	console.log(start_ts+', '+end_ts);
-
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var rowdata = JSON.parse(this.responseText);
-			var g = new line_graph();
-			var buget = 1000;
-			var summary = {0: buget}
-			var weekday = {}
-			weekday[0] =  "Sun";
-			weekday[1] = "Mon";
-			weekday[2] = "Tue";
-			weekday[3] = "Wed";
-			weekday[4] = "Thu";
-			weekday[5] = "Fri";
-			weekday[6] = "Sat";
 			var typesum = {}
 
 			for(i in rowdata.rows) {
 				var date = parseInt(rowdata.rows[i].date);
 				var cost = parseInt(rowdata.rows[i].cost);
 				var type = parseInt(rowdata.rows[i].type);
-				var wd = (new Date(date)).getDay();
-
-				if(summary[wd]) {
-					summary[wd] -= cost;	
-				} else {
-					summary[wd] = buget - cost;
-				}
 
 				if(typesum[type]) {
 					typesum[type] += cost;
@@ -183,11 +218,6 @@ function render_line() {
 				typedraw.push({'type': types[i], 'cost': typesum[i]});
 			}
 			draw(typedraw, max);
-
-			for(i in summary) {
-				g.add(weekday[i], summary[i]);
-			}
-			g.render("lineCanvas", "預算1000");
 		}
 	};
 	xhttp.open("GET", '/list/time/'+start_ts+'-'+end_ts, true);
@@ -211,3 +241,58 @@ function draw(data, max) {
       return (d.cost)*80/max  + '%'
   });
 };
+
+function vBarChart(dataset) {
+//var dataset=[100, 27, 133, 19, 23, 76, 42, 58, 45,66,33];
+//var dataset=[100, 27, 133, 19, 23, 76, 42, ];
+const max = Math.max(...dataset);
+const height = 300;
+
+var chart = d3.select('.vchart')
+	.attr("width", '100%')
+	.attr('height', height)
+	
+
+var bar = chart.selectAll("g")
+	.data(dataset)
+	.enter().append("g")
+
+bar.append("rect")
+    .attr("y",function(d,i){return height-(d/max*(height*0.8));})
+    .attr("x",function(d,i){
+         return i * 100/dataset.length+'%'; //position
+    })
+    .attr("height",function(d){
+         return (d*3);
+    })
+    .attr("width",100/dataset.length+'%') //width
+    .attr("fill","#5F4B8B")
+	.attr("stroke-width",2)
+	.attr("stroke","black");
+
+bar.append('text')
+	.attr('y',function(d){return height-(d/max*(height*0.8))+21;})
+	.attr("x",function(d,i){
+         return (i * 100/dataset.length + 50/dataset.length)+'%'; //position
+    })
+	.style('fill', '#F00')
+	.style('font-size', '18px')
+	.style('font-weight', 'bold')
+	.style("text-anchor", 'middle')
+	.text(function(d){
+	return d;}
+		 );
+
+bar.append('text')
+	.attr('y',function(d){return height*0.1})
+	.attr("x",function(d,i){
+         return (i * 100/dataset.length + 50/dataset.length)+'%'; //position
+    })
+	.style('fill', '#000')
+	.style('font-size', '18px')
+	.style('font-weight', 'bold')
+	.style("text-anchor", 'middle')
+	.text(function(d,i){
+	return i+1;}
+		 );
+}

@@ -18,8 +18,6 @@
     </style>
 	<script src="js/accounting.js"></script>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-	<script type="text/javascript" src="js/wz_jsgraphics.js"></script>
-	<script type="text/javascript" src="js/line.js"></script>
 	<script src="https://d3js.org/d3.v5.min.js"></script>
   </head>
   <body onload="list_report()">
@@ -108,11 +106,7 @@
           <h3>本周</h3>
           <br />
 		    <p id="weekReport">Weekly</p>
-			<div id="lineCanvas" style="overflow: auto; position:relative;height:300px;width:100;"></div>
-
-			<script type="text/javascript">
-				render_line();
-			</script>
+            <svg class="vchart"></svg>
 			<br />
             <h4>列表</h4>
 			<div class="barChart"></div>

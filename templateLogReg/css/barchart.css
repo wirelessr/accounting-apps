@@ -19,3 +19,8 @@
 	margin-right: 10px;
 	padding-right: 10px;
 }
+.vchart{
+	border-bottom-style:solid;
+	border-bottom-width:5px;
+	padding-left: 6px;
+}
