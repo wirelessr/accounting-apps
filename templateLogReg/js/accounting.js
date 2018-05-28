@@ -296,3 +296,47 @@ bar.append('text')
 	return i+1;}
 		 );
 }
+
+function switchmode(item) {
+    var items = ['income', 'outcome'];
+    items.forEach(function(i) {
+        if(i == item.id) {
+            document.getElementById(i).classList.add('w3-border-red');
+        } else {
+            document.getElementById(i).classList.remove('w3-border-red');
+        }
+    });
+
+    if(item.id == 'outcome') {
+        inputform = ''+
+        '<form action="/accounting" method="post" class="w3-container w3-card-4">'+
+          '<h2>消費紀錄</h2>'+
+          '<div class="w3-section">'+
+          '<label>品項</label> '+
+          '<input class="w3-input" type="text" name="note" required="" /></div>'+
+          '<div class="w3-section">'+
+          '<label>金額</label> '+
+          '<input class="w3-input" type="text" name="cost" required="" /></div>'+
+          '<div class="w3-section">'+
+          '<label>種類</label> '+
+          '<select class="w3-select w3-border" name="type">'+
+            '<option value="" disabled="disabled" selected="selected">選一個</option>'+
+            '<option value="1">食物</option>'+
+            '<option value="2">交通</option>'+
+            '<option value="3">娛樂</option>'+
+            '<option value="4">醫療</option>'+
+            '<option value="5">消費</option>'+
+            '<option value="6">住家</option>'+
+            '<option value="99">其他</option>'+
+          '</select></div>'+
+          '<div class="w3-section">'+
+            '<input class="w3-input" type="submit" value="輸入" />'+
+          '</div>'+
+        '</form>';
+
+        console.log(inputform);
+        document.getElementById('inputform').innerHTML = inputform;
+    } else {
+        document.getElementById('inputform').innerHTML = '404 Not Found';
+    }
+}

@@ -48,8 +48,12 @@
           <span onclick="document.getElementById('id01').style.display='none'"
           class="w3-button w3-display-topright">×</span>
           <h4>開源節流</h4>
-          <h5>量入為出</h5>
+          <h5>
+              <div id="outcome" onclick="switchmode(this);" class="w3-panel w3-border w3-round-xlarge w3-half w3-hover-border-red w3-border-red">支出</div>
+              <div id="income" onclick="switchmode(this);" class="w3-panel w3-border w3-round-xlarge w3-half w3-hover-border-red">收入</div>
+          </h5>
         </header>
+        <div id="inputform">
         <form action="/accounting" method="post" class="w3-container w3-card-4">
           <h2>消費紀錄</h2>
           <div class="w3-section">
@@ -74,6 +78,7 @@
             <input class="w3-input" type="submit" value="輸入" />
           </div>
         </form>
+        </div>
         <footer class="w3-container w3-theme-l1">
           <p>Version 1.0</p>
         </footer>
