@@ -15,7 +15,6 @@ function _uuid() {
 }
 
 function setAuth(step) {
-    console.log('setAuth');
     var creds_json = {
         client_email: process.env.GOOGLE_ACCT_EMAIL,
         private_key: process.env.GOOGLE_PRIVATE_KEY
@@ -25,9 +24,7 @@ function setAuth(step) {
 }
 
 function getInfoAndWorksheets(next) {
-    console.log('getInfoAndWorksheets');
     doc.getInfo(function(err, info) {
-        console.log('Loaded doc: '+info.title+' by '+info.author.email);
         users = info.worksheets.find(function(element) {
             return element.title == 'users';
         });
@@ -44,8 +41,6 @@ module.exports.create = function(userdata, callback) {
                 query: 'username == '+userdata.username
             }, function( err, rows ){
                 if(rows.length) {
-                    console.log('Read '+rows.length+' rows');
-                    console.log('ROW: '+rows[0].username+', '+rows[0].password+', '+rows[0].email);
 					err = new Error('Already existed');
 					err.status = 403;
 					callback(err);
@@ -58,9 +53,8 @@ module.exports.create = function(userdata, callback) {
         },
     ], function(err){
         if( err ) {
-            console.log('Error: '+err);
+			throw(err);
         }
-		console.log('Create finished');
     });
 }
 
@@ -69,7 +63,6 @@ module.exports.authenticate = function(acct, passwd, callback) {
 		setAuth,
 		getInfoAndWorksheets,
 		function _authenticate(users, step) {
-            console.log(acct+', '+passwd);
 			users.getRows({
 				query: 'username =='+acct+' and password =='+passwd
 			}, function(err, rows) {
@@ -84,9 +77,8 @@ module.exports.authenticate = function(acct, passwd, callback) {
 		},
 	], function(err){
         if( err ) {
-            console.log('Error: '+err);
+			throw(err);
         }
-		console.log('Authenticate finished');
 	});
 }
 
@@ -109,9 +101,44 @@ module.exports.findById = function(uid, callback) {
 		},
 	], function(err){
         if( err ) {
-            console.log('Error: '+err);
+			throw(err);
         }
-		console.log('Find finished');
 	});
 }
 
+module.exports.delById = function(uid, callback) {
+	async.waterfall([
+		setAuth,
+		function getInfoAndWorksheets(next) {
+			doc.getInfo(function(err, info) {
+				users = info.worksheets.find(function(element) {
+					return element.title == 'users';
+				});
+				user_acct = info.worksheets.find(function(element) {
+					return element.title == uid;
+				});
+				next(err, users, user_acct);
+			});
+		},
+		function _delUser(users, user_acct, next) {
+			users.getRows({
+				query: 'uid =='+uid
+			}, function(err, rows) {
+				if(rows.length) {
+                    //Delete user in users
+					rows[0].del();
+				}
+				next(err, user_acct);
+			});
+		},
+		function _delAcct(user_acct, step) {
+			if(user_acct) {
+                //Delete user's accounting
+				user_acct.del(callback);
+			} else { 
+                callback();
+            }
+			step();
+		}
+	], function(err){});
+}
