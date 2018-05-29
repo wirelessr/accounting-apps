@@ -15,7 +15,6 @@ function _uuid() {
 }
 
 function setAuth(step) {
-	console.log('setAuth');
     var creds_json = {
         client_email: process.env.GOOGLE_ACCT_EMAIL,
         private_key: process.env.GOOGLE_PRIVATE_KEY
@@ -72,7 +71,6 @@ module.exports.authenticate = function(acct, passwd, callback) {
 				} else {
 					err = new Error('Auth failed');
 					err.status = 403;
-					console.log('!403!');
 					callback(err);
 				}
 			});
@@ -109,11 +107,9 @@ module.exports.findById = function(uid, callback) {
 }
 
 module.exports.delById = function(uid, callback) {
-	console.log('hihi');
 	async.waterfall([
 		setAuth,
 		function getInfoAndWorksheets(next) {
-			console.log('hihi');
 			doc.getInfo(function(err, info) {
 				users = info.worksheets.find(function(element) {
 					return element.title == 'users';
@@ -129,17 +125,19 @@ module.exports.delById = function(uid, callback) {
 				query: 'uid =='+uid
 			}, function(err, rows) {
 				if(rows.length) {
+                    //Delete user in users
 					rows[0].del();
 				}
 				next(err, user_acct);
 			});
 		},
 		function _delAcct(user_acct, step) {
-			console.log('_delAcct');
 			if(user_acct) {
-				console.log('_delAcct_'+user_acct);
-				user_acct.del();
-			}
+                //Delete user's accounting
+				user_acct.del(callback);
+			} else { 
+                callback();
+            }
 			step();
 		}
 	], function(err){});

@@ -5,7 +5,6 @@ var async = require('async');
 var HEADER = ['date', 'cost', 'note', 'type'];
 
 function setAuth(step) {
-    console.log('setAuth');
     var creds_json = {
         client_email: process.env.GOOGLE_ACCT_EMAIL,
         private_key: process.env.GOOGLE_PRIVATE_KEY
@@ -18,9 +17,7 @@ module.exports.create = function(uid, data, callback) {
     async.series([
         setAuth,
         function _getWorksheet(step) {
-            console.log('getWorksheet');
             doc.getInfo(function(err, info) {
-                console.log('Loaded doc: '+info.title+' by '+info.author.email);
                 records = info.worksheets.find(function(element) {
                     return element.title == uid;
                 });
@@ -41,7 +38,6 @@ module.exports.create = function(uid, data, callback) {
             }
         },
         function _create(step) {
-            console.log('insert a record')
             data.date = (new Date()).getTime();
             records.addRow(data, callback);
             step();
@@ -50,7 +46,6 @@ module.exports.create = function(uid, data, callback) {
         if(err) {
             console.log(err);
         }
-        console.log('Create finished');
     });
 }
 
@@ -58,9 +53,7 @@ module.exports.retrieve = function(uid, query_params, callback) {
     async.waterfall([
         setAuth,
         function _getWorksheet(next) {
-            console.log('getWorksheet');
             doc.getInfo(function(err, info) {
-                console.log('Loaded doc: '+info.title+' by '+info.author.email);
                 var record = info.worksheets.find(function(element) {
                     return element.title == uid;
                 });
@@ -92,6 +85,5 @@ module.exports.retrieve = function(uid, query_params, callback) {
         if(err) {
             console.log(err);
         }
-        console.log('Retrieve finished');
     });
 }
