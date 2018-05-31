@@ -148,8 +148,8 @@ function drawChart() {
             var weeks = getWeeksInMonth(isoy_m[1]-1, isoy_m[0]);
             var weeks_ts = weeks.map(function(w) {
                 var week_ts = {};
-                week_ts.start = new Date(isoy_m+'-'+w.start.pad(2)).getTime();
-                endday = new Date(isoy_m+'-'+w.end.pad(2));
+                week_ts.start = new Date(isodate+'-'+w.start.pad(2)).getTime();
+                endday = new Date(isodate+'-'+w.end.pad(2));
                 endday.setHours(24,0,0,0);
                 week_ts.end = endday.getTime();
                 return week_ts;
