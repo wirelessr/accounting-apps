@@ -1,10 +1,8 @@
-<!-- https://rent.591.com.tw/?kind=1&region=1&pattern=2&area=10,20&rentprice=10000,15000&option=naturalgas,washer -->
-<!-- https://rent.591.com.tw/?kind=1&region=1&pattern=2&area=10,20&rentprice=3&option=naturalgas,washer&other=cook,balcony_1 -->
 <!DOCTYPE html>
 <html>
     <head>
     </head>
-    <title>TEST 5gl</title>
+    <title>SGL APP</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -14,6 +12,7 @@
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
 
 img {
+    transition: transform .2s;
     width:100%;
 }
 img:hover {
@@ -119,10 +118,7 @@ function w3_close() {
                 }
 
 function myFunction(){
-<!-- https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=2&searchtype=1&region=1&rentprice=3&pattern=2&area=10,20&option=naturalgas,washer,broadband&other=cook,pet,balcony_1&sex=1 -->
     var body = {};
-    var pattern = 'pattern=';
-    var sgl_url = 'http://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&searchtype=1&region=1&firstRow=0&hasimg=1&not_cover=1';
     var i;
     var xhttp = new XMLHttpRequest();
 
@@ -159,8 +155,6 @@ function myFunction(){
     }
     body['other'] = other;
 
-    document.getElementById('main-page').innerHTML = sgl_url;
-
     xhttp.onreadystatechange = function() {
         if(this.readyState == 4 && this.status == 200) {
             var houses = JSON.parse(this.responseText);
@@ -186,7 +180,7 @@ function myFunction(){
             document.getElementById('main-page').innerHTML = render_house;
         }
     };
-    xhttp.open('POST', 'http://localhost:3000/sgl', true);
+    xhttp.open('POST', '/sgl', true);
     xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhttp.send(JSON.stringify(body));
 }
