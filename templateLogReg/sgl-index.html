@@ -1,0 +1,195 @@
+<!-- https://rent.591.com.tw/?kind=1&region=1&pattern=2&area=10,20&rentprice=10000,15000&option=naturalgas,washer -->
+<!-- https://rent.591.com.tw/?kind=1&region=1&pattern=2&area=10,20&rentprice=3&option=naturalgas,washer&other=cook,balcony_1 -->
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    <title>TEST 5gl</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", Arial, Helvetica, sans-serif}
+
+img {
+    width:100%;
+}
+img:hover {
+    transform: scale(5);
+}
+    </style>
+    <body class="w3-content w3-border-left w3-border-right">
+
+        <!-- Sidebar/menu -->
+        <nav class="w3-sidebar w3-light-grey w3-collapse w3-top" style="z-index:3;width:260px" id="mySidebar">
+            <div class="w3-container w3-display-container w3-padding-16">
+                <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-transparent w3-display-topright"></i>
+                <h3>台北市出租</h3>
+                <hr>
+
+                <p><label><i class="fa fa-institution"></i> 類型</label></p>
+                <select class="w3-select w3-border" id="sgl-kind" onchange="changeKind()">
+                    <option value="1">整層住家</option>
+                    <option value="2">獨立套房</option>
+                </select>         
+                <p><label><i class="fa fa-dollar"></i> 租金</label></p>
+                <input class="w3-border sgl-rentprice" type="text" value="10000" style="text-align:center;width:30%">
+                <strong>-</strong>	  
+                <input class="w3-border sgl-rentprice" type="text" value="20000" style="text-align:center;width:30%"> 
+                <p><label><i class="fa fa-home"></i> 格局</label></p>
+                <input class="w3-border" type="number" value="1" id="sgl-pattern" min="1" max="4" style="width:30%"> 房           
+                <p><label><i class="fa fa-child"></i> 坪數</label></p>
+                <input class="w3-border sgl-area" type="text" value="10" style="text-align:center;width:30%">
+                <strong>-</strong>	  
+                <input class="w3-border sgl-area" type="text" value="20" style="text-align:center;width:30%"> 
+
+                <hr>
+                <p><label><i class="fa fa-puzzle-piece"></i> 設備</label></p>
+                <div class="w3-row">
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-option" type="checkbox" name="naturalgas">
+                        <label>瓦斯</label>
+                    </div>
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-option" type="checkbox" name="washer">
+                        <label>洗衣機</label>
+                    </div>
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-option" type="checkbox" name="broadband">
+                        <label>網路</label>
+                    </div>
+                </div>
+
+                <p><label><i class="fa fa-fire"></i> 條件</label></p>
+                <div class="w3-row">
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-other" type="checkbox" name="cook">
+                        <label>可開伙</label>
+                    </div>
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-other" type="checkbox" name="balcony_1">
+                        <label>有陽台</label>
+                    </div>
+                    <div class="w3-col s6">
+                        <input class="w3-check sgl-other" type="checkbox" name="pet">
+                        <label>養寵物</label>
+                    </div>
+                </div>
+                <p><button class="w3-button w3-block w3-green w3-left-align" onclick="myFunction()"><i class="fa fa-search w3-margin-right"></i> 搜尋</button></p>
+            </div>
+
+        </nav>
+
+        <!-- Top menu on small screens -->
+        <header class="w3-bar w3-top w3-hide-large w3-black w3-xlarge">
+            <span class="w3-bar-item">Rental</span>
+            <a href="javascript:void(0)" class="w3-right w3-bar-item w3-button" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+        </header>
+
+        <!-- Overlay effect when opening sidebar on small screens -->
+        <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+
+        <div class="w3-main w3-white" style="margin-left:260px">
+
+            <!-- Push down content on small screens -->
+            <div class="w3-hide-large" style="margin-top:80px"></div>
+
+            <div class="w3-container" id="main-page">
+            </div>
+            <script>
+                // Script to open and close sidebar when on tablets and phones
+function w3_open() {
+    document.getElementById("mySidebar").style.display = "block";
+    document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+    document.getElementById("mySidebar").style.display = "none";
+    document.getElementById("myOverlay").style.display = "none";
+}
+
+                function changeKind() {
+                    if(document.getElementById('sgl-kind').value == 2) {
+                        document.getElementById('sgl-pattern').disabled = true;
+                    } else {
+                        document.getElementById('sgl-pattern').disabled = false;
+                    }
+                }
+
+function myFunction(){
+<!-- https://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&kind=2&searchtype=1&region=1&rentprice=3&pattern=2&area=10,20&option=naturalgas,washer,broadband&other=cook,pet,balcony_1&sex=1 -->
+    var body = {};
+    var pattern = 'pattern=';
+    var sgl_url = 'http://rent.591.com.tw/home/search/rsList?is_new_list=1&type=1&searchtype=1&region=1&firstRow=0&hasimg=1&not_cover=1';
+    var i;
+    var xhttp = new XMLHttpRequest();
+
+    k = document.getElementById('sgl-kind');
+    body['kind'] = k.value;
+
+    if(k.value == '1') {
+        body['pattern'] = document.getElementById('sgl-pattern').value;
+    }
+    
+    r = document.getElementsByClassName('sgl-rentprice');
+    body['rentprice'] = [r[0].value, r[1].value];
+
+    a = document.getElementsByClassName('sgl-area');
+    body['area'] = [a[0].value, a[1].value];
+
+    x = document.getElementsByClassName('sgl-option');
+    var option = [];
+    for(i = 0; i < x.length; i++) {
+        var item = x[i];
+        if(item.checked) {
+            option.push(item.name);
+        }
+    }
+    body['option'] = option;
+
+    x = document.getElementsByClassName('sgl-other');
+    var other = [];
+    for(i = 0; i < x.length; i++) {
+        var item = x[i];
+        if(item.checked) {
+            other.push(item.name);
+        }
+    }
+    body['other'] = other;
+
+    document.getElementById('main-page').innerHTML = sgl_url;
+
+    xhttp.onreadystatechange = function() {
+        if(this.readyState == 4 && this.status == 200) {
+            var houses = JSON.parse(this.responseText);
+            var render_house = '';
+            for(h in houses) {
+                var house = houses[h];
+
+                render_house += '<h1>名稱：' + house.name + '</h1>';
+                render_house += '<div class="w3-row-padding">';
+                for(idx in house.img) {
+                    render_house += '<div class="w3-col s3 w3-margin-bottom"><img src="' + house.img[idx] + '"></div>';
+                }
+                render_house += '</div>';
+                render_house += '<div class="w3-center">';
+                render_house += '<p>租金：' + house.price + '</p>';
+                render_house += '<p>坪數：' + house.area + '</p>';
+                render_house += '<p>格局：' + house.layout + '</p>';
+                render_house += '<p>更新時間：' + new Date(house.update_at) + '</p>';
+                render_house += '<a href="' + house.url + '">網址：' + house.url + '</a>';
+                render_house += '</div>';
+            }
+            console.log(render_house);
+            document.getElementById('main-page').innerHTML = render_house;
+        }
+    };
+    xhttp.open('POST', 'http://localhost:3000/sgl', true);
+    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhttp.send(JSON.stringify(body));
+}
+            </script>
+    </body>
+</html>

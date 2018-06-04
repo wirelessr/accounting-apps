@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/users');
 var path = require('path');
 var Record = require('../models/records');
+const House = require('../models/house');
 
 // GET route for reading data
 router.get('/', function (req, res, next) {
@@ -195,6 +196,20 @@ router.get('/list/:type/:range*?', function(req, res, next){
 		err.status = 400;
 		return next(err);
 	}
+});
+
+router.get('/sgl', function(req, res, next) {
+    return res.sendFile(path.join(process.cwd(), 'templateLogReg/sgl-index.html'));
+});
+
+router.post('/sgl', function(req, res, next) {
+    House.query(req.body, (err, ret) => {
+        if(err) {
+            return next(err);
+        } else {
+            res.json(ret);
+        }
+    });
 });
 
 module.exports = router;
