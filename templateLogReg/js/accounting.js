@@ -56,15 +56,20 @@ function list_daily_report(isodate) {
 		if (this.readyState == 4 && this.status == 200) {
 			var rowdata = JSON.parse(this.responseText);
 			var table = '';
+            var total = 0;
 			for(i in rowdata.rows) {
 				if(rowdata.rows[i].cost > 0) {
+                    cost = parseInt(rowdata.rows[i].cost);
+                    total += cost;
+
 					table += '<tr>';
 					table += '<td>'+rowdata.rows[i].note+'</td>';
 					table += '<td><i class="fa '+icons[rowdata.rows[i].type]+'"></i></td>';
-					table += '<td>'+rowdata.rows[i].cost+'</td>';
+					table += '<td>'+cost+'</td>';
 					table += '</tr>';
 				}
 			}
+            table += '<tr><td><span class="w3-indigo">總和</span></td><td/><td>' + total + '</td></tr>'
 			document.getElementById("todayReport").innerHTML = table;
 		}
 	};
