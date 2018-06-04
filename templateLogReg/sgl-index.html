@@ -19,6 +19,7 @@ img:hover {
     transform: scale(5);
 }
     </style>
+	<script src="js/sgl.js"></script>
     <body class="w3-content w3-border-left w3-border-right">
 
         <!-- Sidebar/menu -->
@@ -76,7 +77,7 @@ img:hover {
                         <label>養寵物</label>
                     </div>
                 </div>
-                <p><button class="w3-button w3-block w3-green w3-left-align" onclick="myFunction()"><i class="fa fa-search w3-margin-right"></i> 搜尋</button></p>
+                <p><button class="w3-button w3-block w3-green w3-left-align" onclick="query_house(1)"><i class="fa fa-search w3-margin-right"></i> 搜尋</button></p>
             </div>
 
         </nav>
@@ -96,7 +97,11 @@ img:hover {
             <div class="w3-hide-large" style="margin-top:80px"></div>
 
             <div class="w3-container" id="main-page">
-            </div>
+			</div>
+			<div class="w3-center w3-padding-32">
+				<div class="w3-bar" id="pages">
+				</div>
+			</div>
             <script>
                 // Script to open and close sidebar when on tablets and phones
 function w3_open() {
@@ -117,73 +122,6 @@ function w3_close() {
                     }
                 }
 
-function myFunction(){
-    var body = {};
-    var i;
-    var xhttp = new XMLHttpRequest();
-
-    k = document.getElementById('sgl-kind');
-    body['kind'] = k.value;
-
-    if(k.value == '1') {
-        body['pattern'] = document.getElementById('sgl-pattern').value;
-    }
-    
-    r = document.getElementsByClassName('sgl-rentprice');
-    body['rentprice'] = [r[0].value, r[1].value];
-
-    a = document.getElementsByClassName('sgl-area');
-    body['area'] = [a[0].value, a[1].value];
-
-    x = document.getElementsByClassName('sgl-option');
-    var option = [];
-    for(i = 0; i < x.length; i++) {
-        var item = x[i];
-        if(item.checked) {
-            option.push(item.name);
-        }
-    }
-    body['option'] = option;
-
-    x = document.getElementsByClassName('sgl-other');
-    var other = [];
-    for(i = 0; i < x.length; i++) {
-        var item = x[i];
-        if(item.checked) {
-            other.push(item.name);
-        }
-    }
-    body['other'] = other;
-
-    xhttp.onreadystatechange = function() {
-        if(this.readyState == 4 && this.status == 200) {
-            var houses = JSON.parse(this.responseText);
-            var render_house = '';
-            for(h in houses) {
-                var house = houses[h];
-
-                render_house += '<h1>名稱：' + house.name + '</h1>';
-                render_house += '<div class="w3-row-padding">';
-                for(idx in house.img) {
-                    render_house += '<div class="w3-col s3 w3-margin-bottom"><img src="' + house.img[idx] + '"></div>';
-                }
-                render_house += '</div>';
-                render_house += '<div class="w3-center">';
-                render_house += '<p>租金：' + house.price + '</p>';
-                render_house += '<p>坪數：' + house.area + '</p>';
-                render_house += '<p>格局：' + house.layout + '</p>';
-                render_house += '<p>更新時間：' + new Date(house.update_at) + '</p>';
-                render_house += '<a href="' + house.url + '">網址：' + house.url + '</a>';
-                render_house += '</div>';
-            }
-            console.log(render_house);
-            document.getElementById('main-page').innerHTML = render_house;
-        }
-    };
-    xhttp.open('POST', '/sgl', true);
-    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    xhttp.send(JSON.stringify(body));
-}
             </script>
     </body>
 </html>

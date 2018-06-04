@@ -12,7 +12,8 @@ module.exports.query = function(arg, callback) {
 
 	request(url, (err, res, body) => {
 		var houses = JSON.parse(body);
-		var ret = [];
+		var records = houses['records'];
+		var ret = {'records': records, 'info': []};
 
 		var data = houses['data']['data'];
 
@@ -33,7 +34,7 @@ module.exports.query = function(arg, callback) {
 				house['url'] = detail_url;
 				house['update_at'] = info.refreshtime;
 
-				ret.push(house);
+				ret.info.push(house);
 				done();
 			});
 		};
