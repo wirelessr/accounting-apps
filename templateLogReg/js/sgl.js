@@ -2,6 +2,26 @@ function query_house(page){
     var body = {};
     var i;
     var xhttp = new XMLHttpRequest();
+	var progress_bar = '<div class="w3-light-gray">'+
+		'<div id="myBar" class="w3-center w3-padding w3-indigo" style="width:0%">0%</div>'+
+		'</div>';
+	document.getElementById('main-page').innerHTML = progress_bar;
+	var width = 0;
+	var id = setInterval(frame, 25); /* 25ms*/
+	function frame() {
+		if (width == 100) {
+			clearInterval(id);
+		} else {
+			var elem = document.getElementById("myBar");
+			if(elem) {
+				width++; 
+				elem.style.width = width + '%'; 
+				elem.innerHTML = width * 1  + '%';
+			} else {
+				clearInterval(id);
+			}
+		}
+	}
 
 	body['firstRow'] = (page - 1) * 30;
 
