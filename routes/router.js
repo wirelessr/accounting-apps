@@ -212,4 +212,8 @@ router.post('/sgl', function(req, res, next) {
     });
 });
 
+router.get('/test-l10n', function(req, res, next) {
+    return res.sendFile(path.join(process.cwd(), 'templateLogReg/test-l10n.html'));
+});
+
 module.exports = router;
